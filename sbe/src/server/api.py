@@ -64,3 +64,8 @@ async def summarize_paper(link: str = Query(..., description = "URL of the paper
     # Using the summarisation function from ChatGPTFunctions class
     summary = dp.ChatGPTFunctions.summarizeText(fullText)
 
+    return{
+        "url": link,
+        "summary": summary
+    }
+
