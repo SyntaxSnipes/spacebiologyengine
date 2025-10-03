@@ -1,103 +1,116 @@
+"use client";
+
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] font-sans bg-[#202124] text-gray-900">
+      <NavBar />
+      <main className="flex flex-col items-center justify-center px-4">
+        <SearchHero />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Footer />
     </div>
+  );
+}
+
+function NavBar() {
+  return (
+    <header className="sticky top-0 z-50 w-full border-[#444647] border-b bg-[#202124] backdrop-blur">
+      <nav className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
+        <div className="flex items-center gap-2">
+          <Image src="/logos/TL.svg" alt="Logo" width={24} height={24} />
+          <span className="text-sm font-semibold tracking-tight text-[#FFFEFE]">
+            TL Space Biology Engine
+          </span>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+function SearchHero() {
+  const router = useRouter();
+  const [results, setResults] = useState<unknown[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const query = formData.get("q")?.toString().trim();
+    if (!query) return;
+    router.push(`/search/${encodeURIComponent(query)}`);
+  }
+
+  return (
+    <section className="flex w-full flex-col items-center justify-center py-16 bg-[#202124]">
+      <div className="mb-8 flex flex-col items-center gap-3">
+        <Image
+          src="/logos/TLsearch.svg"
+          alt="Space Bio Engine"
+          width={72}
+          height={72}
+          className="opacity-90"
+        />
+        <h1 className="text-[3rem] font-semibold tracking-tight text-[#FFFEFE]">
+          Space Biology Engine
+        </h1>
+      </div>
+
+      {/* ✅ Enter will now submit this form */}
+      <form onSubmit={handleSubmit} className="w-full flex justify-center">
+        <div
+          className="group flex w-[678px] max-w-full items-center gap-2 
+                        rounded-full border bg-[#4d5156] px-4 py-3 shadow-sm transition"
+        >
+          <input
+            autoFocus
+            type="text"
+            name="q"
+            placeholder="Search experiments, datasets, assays…"
+            className="mx-2 w-full bg-transparent text-[15px] outline-none 
+                       text-[#FFFEFE] placeholder:text-gray-400"
+            aria-label="Search"
+          />
+          <button
+            type="submit"
+            className="rounded-2xl bg-gray-300 px-4 py-2 text-sm transition hover:bg-gray-50"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+
+      <p className="mt-4 text-xs text-gray-500">
+        Tip: press <kbd className="rounded border bg-gray-50 px-1">Enter</kbd>{" "}
+        to search
+      </p>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="w-full border-t border-[#444647] bg-[#171616]">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-gray-500 sm:flex-row">
+        <span>United Arab Emirates</span>
+        <div className="flex items-center gap-4">
+          <a
+            className="hover:underline"
+            href="https://www.spaceappschallenge.org/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            NASA Space Apps
+          </a>
+          <span>•</span>
+          <span>
+            © {new Date().getFullYear()} TerraLumen Space Biology Engine
+          </span>
+        </div>
+      </div>
+    </footer>
   );
 }
