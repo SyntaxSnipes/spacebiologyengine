@@ -1,5 +1,6 @@
 # All these libraries will need to be downloaded via pip
 from fastapi import FastAPI
+from fastapi import Query
 from fastapi.middleware.cors import CORSMiddleware
 import dataprocessing as dp
 import pandas
@@ -55,4 +56,11 @@ async def root(searchQuery: str = "", searchNum: int = 4):
 
     return formatDFtoPaper(matchedPapers)
     
+@app.get("/summary")
+async def summarize_paper(link: str = Query(..., description = "URL of the paper to summarize")):
+    content = dp.scrapePaper(link)
+    fullText = " ".join(content)
+
+    # Using the summarisation function from ChatGPTFunctions class
+    summary = dp.ChatGPTFunctions.summarizeText(fullText)
 
