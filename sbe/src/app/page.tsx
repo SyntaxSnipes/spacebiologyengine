@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] font-sans bg-[#202124] text-gray-900">
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] font-sans">
       <NavBar />
       <main className="flex flex-col items-center justify-center px-4">
         <SearchHero />
@@ -18,14 +18,18 @@ export default function Home() {
 
 function NavBar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-[#444647] border-b bg-[#202124] backdrop-blur">
-      <nav className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <Image src="/logos/TL.svg" alt="Logo" width={24} height={24} />
-          <span className="text-sm font-semibold tracking-tight text-[#FFFEFE]">
-            TL Space Biology Engine
-          </span>
-        </div>
+    <header className="sticky top-0 z-50 w-full h-[93px] flex items-center border-[#444647] border-b bg-[#202124] backdrop-blur">
+      <nav className="flex h-14 w-full max-w-6xl items-center justify-between">
+        <span className="flex flex-row items-center justify-start gap-2 ml-9">
+          <Link href={"/"}>
+            <Image
+              src="/logos/TLsearch.svg"
+              alt="Logo"
+              width={100}
+              height={50}
+            />
+          </Link>
+        </span>
       </nav>
     </header>
   );
@@ -33,8 +37,6 @@ function NavBar() {
 
 function SearchHero() {
   const router = useRouter();
-  const [results, setResults] = useState<unknown[]>([]);
-  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,25 +47,17 @@ function SearchHero() {
   }
 
   return (
-    <section className="flex w-full flex-col items-center justify-center py-16 bg-[#202124]">
+    <section className="flex w-full flex-col items-center justify-center py-16">
       <div className="mb-8 flex flex-col items-center gap-3">
-        <Image
-          src="/logos/TLsearch.svg"
-          alt="Space Bio Engine"
-          width={72}
-          height={72}
-          className="opacity-90"
-        />
         <h1 className="text-[3rem] font-semibold tracking-tight text-[#FFFEFE]">
           Space Biology Engine
         </h1>
       </div>
 
-      {/* ✅ Enter will now submit this form */}
       <form onSubmit={handleSubmit} className="w-full flex justify-center">
         <div
           className="group flex w-[678px] max-w-full items-center gap-2 
-                        rounded-full border bg-[#4d5156] px-4 py-3 shadow-sm transition"
+                        rounded-full bg-[#4d5156] px-4 py-3 shadow-sm transition"
         >
           <input
             autoFocus
@@ -76,7 +70,7 @@ function SearchHero() {
           />
           <button
             type="submit"
-            className="rounded-2xl bg-gray-300 px-4 py-2 text-sm transition hover:bg-gray-50"
+            className="rounded-2xl bg-gray-500 px-4 py-2 text-sm transition hover:bg-gray-50 hover:text-shadow-black text-white"
           >
             Search
           </button>
@@ -107,7 +101,7 @@ function Footer() {
           </a>
           <span>•</span>
           <span>
-            © {new Date().getFullYear()} TerraLumen Space Biology Engine
+            {new Date().getFullYear()} TerraLumen Space Biology Engine
           </span>
         </div>
       </div>
